@@ -16,7 +16,7 @@ local isRunning = false
 local cancelFlag = false
 
 -- زر السرقة
-Section:NewButton("Click Steal", "يسرق ويطيرك فوق", function()
+Section:NewButton("Click Steal", "يسرق، يطيرك فوق، ثم يرجعك", function()
     if isRunning then return end
     isRunning = true
     cancelFlag = false
@@ -25,23 +25,23 @@ Section:NewButton("Click Steal", "يسرق ويطيرك فوق", function()
     for i = 1, 20 do
         if cancelFlag then break end
         for _, obj in ipairs(workspace:GetDescendants()) do
-            if obj:IsA("BasePart") and obj.Name == "DeliveryHitbox" then -- غير الاسم حسب لعبتك
+            if obj:IsA("BasePart") and obj.Name == "DeliveryHitbox" then -- غيّر الاسم إذا اللعبة مختلفة
                 pcall(function()
                     firetouchinterest(hrp, obj, 0)
                     task.wait(0.1)
                     firetouchinterest(hrp, obj, 1)
-                    -- ✨ بعد السرقة، يطير فوق
+                    
+                    -- ✨ الطلعة والنزلة
+                    local originalPos = hrp.CFrame
                     hrp.CFrame = hrp.CFrame + Vector3.new(0, 50, 0)
+                    task.wait(0.3)
+                    hrp.CFrame = originalPos
                 end)
             end
         end
     end
 
-    if cancelFlag then
-        print("[Arbix Hub]: تم الإيقاف")
-    else
-        print("[Arbix Hub]: تم التنفيذ")
-    end
+    print("[Arbix Hub]: تم التنفيذ")
     isRunning = false
 end)
 
