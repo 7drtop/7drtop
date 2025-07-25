@@ -1,23 +1,30 @@
--- تحميل Kavo UI
+-- تحميل مكتبة Kavo UI
 local Library = loadstring(game:HttpGet("https://raw.githubusercontent.com/xHeptc/Kavo-UI-Library/main/source.lua"))()
 
--- إنشاء الواجهة
 local Window = Library.CreateLib("Steal GUI", "Midnight")
 local Tab = Window:NewTab("Main")
 local Section = Tab:NewSection("Controls")
 
--- المتغيرات
-local player = game.Players.LocalPlayer
-local character = player.Character or player.CharacterAdded:Wait()
-local hrp = character:WaitForChild("HumanoidRootPart")
+local Players = game:GetService("Players")
+local LocalPlayer = Players.LocalPlayer
 
--- الزر
-Section:NewButton("سرقة", "يسرق مباشرة ويرجعك", function()
+local isRunning = false
+local cancelFlag = false
+
+Section:NewButton("سرقة", "يسرق ويطير فوق ويرجع", function()
+    if isRunning then return end
+    isRunning = true
+    cancelFlag = false
+
+    local char = LocalPlayer.Character or LocalPlayer.CharacterAdded:Wait()
+    local hrp = char:WaitForChild("HumanoidRootPart")
     local original = hrp.CFrame
+
     hrp.CFrame = hrp.CFrame + Vector3.new(0, 50, 0)
     task.wait(0.2)
 
     for _, obj in ipairs(workspace:GetDescendants()) do
+        if cancelFlag then break end
         if obj:IsA("BasePart") and obj.Name == "DeliveryHitbox" then
             pcall(function()
                 firetouchinterest(hrp, obj, 0)
@@ -29,4 +36,10 @@ Section:NewButton("سرقة", "يسرق مباشرة ويرجعك", function()
 
     task.wait(0.2)
     hrp.CFrame = original
+
+    isRunning = false
+end)
+
+Section:NewButton("رفرش", "يلغي العملية إذا شغالة", function()
+    cancelFlag = true
 end)
