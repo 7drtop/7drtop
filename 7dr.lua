@@ -1,5 +1,4 @@
 local Library = loadstring(game:HttpGet("https://raw.githubusercontent.com/xHeptc/Kavo-UI-Library/main/source.lua"))()
-
 local Window = Library.CreateLib("Steal GUI", "Midnight")
 local Tab = Window:NewTab("Main")
 local Section = Tab:NewSection("Options")
@@ -10,10 +9,11 @@ local LocalPlayer = Players.LocalPlayer
 local isRunning = false
 local cancelFlag = false
 
-Section:NewButton("سرقة", "يسرق ويطير فوق ويرجع", function()
+Section:NewButton("Steal", "Click to steal and fly up then back", function()
     if isRunning then return end
     isRunning = true
     cancelFlag = false
+
     local char = LocalPlayer.Character or LocalPlayer.CharacterAdded:Wait()
     local hrp = char:WaitForChild("HumanoidRootPart")
     local original = hrp.CFrame
@@ -34,9 +34,10 @@ Section:NewButton("سرقة", "يسرق ويطير فوق ويرجع", function(
 
     task.wait(0.2)
     hrp.CFrame = original
+
     isRunning = false
 end)
 
-Section:NewButton("رفرش", "يلغي العملية اذا شغالة", function()
+Section:NewButton("Refresh", "Cancel stealing process", function()
     cancelFlag = true
 end)
