@@ -1,43 +1,15 @@
 local Library = loadstring(game:HttpGet("https://raw.githubusercontent.com/xHeptc/Kavo-UI-Library/main/source.lua"))()
-local Window = Library.CreateLib("Steal GUI", "Midnight")
-local Tab = Window:NewTab("Main")
-local Section = Tab:NewSection("Options")
+local Window = Library.CreateLib("7dr team", "Midnight")
 
-local Players = game:GetService("Players")
-local LocalPlayer = Players.LocalPlayer
+-- الانتظار عشان عناصر الواجهة تظهر
+wait(1)
 
-local isRunning = false
-local cancelFlag = false
-
-Section:NewButton("Steal", "Click to steal and fly up then back", function()
-    if isRunning then return end
-    isRunning = true
-    cancelFlag = false
-
-    local char = LocalPlayer.Character or LocalPlayer.CharacterAdded:Wait()
-    local hrp = char:WaitForChild("HumanoidRootPart")
-    local original = hrp.CFrame
-
-    hrp.CFrame = hrp.CFrame + Vector3.new(0,50,0)
-    task.wait(0.2)
-
-    for _, obj in ipairs(workspace:GetDescendants()) do
-        if cancelFlag then break end
-        if obj:IsA("BasePart") and obj.Name == "DeliveryHitbox" then
-            pcall(function()
-                firetouchinterest(hrp, obj, 0)
-                task.wait(0.05)
-                firetouchinterest(hrp, obj, 1)
-            end)
-        end
+-- الوصول للنافذة وتغيير حجمها
+local CoreGui = game:GetService("CoreGui")
+local Gui = CoreGui:FindFirstChild("7dr") -- اسم النافذة
+if Gui then
+    local mainFrame = Gui:FindFirstChild("Main")
+    if mainFrame then
+        mainFrame.Size = UDim2.new(0, 150, 0, 100) -- غيّر الحجم هنا (العرض, الطول)
     end
-
-    task.wait(0.2)
-    hrp.CFrame = original
-
-    isRunning = false
-end)
-
-Section:NewButton("Refresh", "Cancel stealing process", function()
-    cancelFlag = true
-end)
+end
