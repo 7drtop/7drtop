@@ -1,3 +1,4 @@
+local Library = loadstring(game:HttpGet("https://raw.githubusercontent.com/xHeptc/Kavo-UI-Library/main/source.lua"))()
 -- إنشاء ScreenGui
 local player = game.Players.LocalPlayer
 local playerGui = player:WaitForChild("PlayerGui")
