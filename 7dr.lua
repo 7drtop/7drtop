@@ -4,6 +4,6 @@ local gui = game:GetService("CoreGui"):FindFirstChild("KavoUI")
 if gui then
     local main = gui:FindFirstChild("Main")
     if main then
-        main.Size = UDim2.new(0, 60, 0, 50) -- غيّر الحجم حسب رغبتك
+        main.Size = UDim2.new(60, 60, 50, 50) -- غيّر الحجم حسب رغبتك
     end
 end
