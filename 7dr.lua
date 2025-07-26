@@ -1,58 +1,43 @@
 local Library = loadstring(game:HttpGet("https://raw.githubusercontent.com/xHeptc/Kavo-UI-Library/main/source.lua"))()
--- إنشاء ScreenGui
-local player = game.Players.LocalPlayer
-local playerGui = player:WaitForChild("PlayerGui")
 
-local screenGui = Instance.new("ScreenGui")
-screenGui.Name = "SimpleGUI"
-screenGui.Parent = playerGui
+-- إنشاء نافذة
+local Window = Library.CreateLib("Delta Hub", "Midnight")
 
--- إنشاء إطار صغير
-local frame = Instance.new("Frame")
-frame.Size = UDim2.new(0, 150, 0, 80)
-frame.Position = UDim2.new(0, 20, 0, 20)
-frame.BackgroundColor3 = Color3.fromRGB(25, 25, 25)
-frame.Parent = screenGui
+-- تبويب رئيسي
+local Tab = Window:NewTab("Main")
+local Section = Tab:NewSection("Options")
 
--- تزيين الإطار
-local uicorner = Instance.new("UICorner")
-uicorner.CornerRadius = UDim.new(0, 8)
-uicorner.Parent = frame
-
--- متغير للتحكم بالعملية
 local isStealing = false
 
+-- دالة السرقة (تفترض دلتا فيها دالة بهذا الاسم)
+local function DeltaSteal()
+    -- هنا تحط كود دلتا الحقيقي للسرقة
+    print("Delta Steal executed!")
+    -- مثال: teleport up then down (تعديل حسب دلتا الحقيقي)
+    local player = game.Players.LocalPlayer
+    local char = player.Character or player.CharacterAdded:Wait()
+    if char and char:FindFirstChild("HumanoidRootPart") then
+        -- اطلع فوق
+        char.HumanoidRootPart.CFrame = char.HumanoidRootPart.CFrame + Vector3.new(0, 10, 0)
+        wait(0.5)
+        -- نزل تحت
+        char.HumanoidRootPart.CFrame = char.HumanoidRootPart.CFrame - Vector3.new(0, 10, 0)
+    end
+end
+
 -- زر السرقة
-local stealButton = Instance.new("TextButton")
-stealButton.Size = UDim2.new(0, 130, 0, 30)
-stealButton.Position = UDim2.new(0, 10, 0, 10)
-stealButton.BackgroundColor3 = Color3.fromRGB(0, 170, 255)
-stealButton.Text = "Steal"
-stealButton.TextColor3 = Color3.new(1,1,1)
-stealButton.Parent = frame
-
--- زر الريفرش
-local refreshButton = Instance.new("TextButton")
-refreshButton.Size = UDim2.new(0, 130, 0, 30)
-refreshButton.Position = UDim2.new(0, 10, 0, 45)
-refreshButton.BackgroundColor3 = Color3.fromRGB(255, 50, 50)
-refreshButton.Text = "Refresh"
-refreshButton.TextColor3 = Color3.new(1,1,1)
-refreshButton.Parent = frame
-
--- وظيفة زر السرقة: ينقل اللاعب لفوق مرة وحدة
-stealButton.MouseButton1Click:Connect(function()
+Section:NewButton("Steal", "Execute steal using Delta hack", function()
     if not isStealing then
         isStealing = true
-        local char = player.Character or player.CharacterAdded:Wait()
-        if char and char:FindFirstChild("HumanoidRootPart") then
-            char.HumanoidRootPart.CFrame = char.HumanoidRootPart.CFrame + Vector3.new(0, 10, 0)
-        end
+        DeltaSteal()
         isStealing = false
     end
 end)
 
--- وظيفة زر الريفرش: يوقف أي عملية جارية (لو في شيء)
-refreshButton.MouseButton1Click:Connect(function()
-    isStealing = false
+-- زر الريفرش (إلغاء العملية - مثال)
+Section:NewButton("Refresh", "Cancel current steal if stuck", function()
+    if isStealing then
+        isStealing = false
+        print("Steal canceled")
+    end
 end)
